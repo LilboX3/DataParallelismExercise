@@ -3,7 +3,6 @@
 #include <vector>
 #include <omp.h>
 
-// stb einbinden
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "./stb_image_write.h"
 
@@ -29,7 +28,7 @@ public:
 
     void generate()
     {
-        // Parallel Loop (OpenMP)
+        // Parallelism with parallel loops (openMP)
 #pragma omp parallel for
         for (int py = 0; py < height; py++)
         {
@@ -49,7 +48,7 @@ private:
 
     void computePixel(int px, int py)
     {
-        // 🔹 Pixel → komplexe Ebene mappen
+        // map pixel to complex number
         double cx = minX + (double)px / width * (maxX - minX);
         double cy = minY + (double)py / height * (maxY - minY);
 
@@ -58,7 +57,7 @@ private:
 
         int iteration = 0;
 
-        // Mandelbrot Iteration
+        // add to z iteration and decide pixel color
         for (int n = 0; n < maxIterations; n++)
         {
             double x = zx * zx - zy * zy + cx;
@@ -85,14 +84,14 @@ private:
 
         if (iteration == maxIterations - 1)
         {
-            // im Set → schwarz
+            // reached end --> black pixel
             image[index + 0] = 0;
             image[index + 1] = 0;
             image[index + 2] = 0;
         }
         else
         {
-            // Farbverlauf (einfach)
+            // color based on n
             int color = (int)(255.0 * iteration / maxIterations);
 
             image[index + 0] = color;
