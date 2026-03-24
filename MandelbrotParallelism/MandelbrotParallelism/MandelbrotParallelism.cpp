@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <chrono>
 #include "Mandelbrot.h"
 
 int main()
@@ -18,7 +19,6 @@ int main()
     std::cout << "Enter viewport (minX minY maxX maxY): ";
     std::cin >> minX >> minY >> maxX >> maxY;
 
-    // Optional: einfache Validierung
     if (width <= 0 || height <= 0 || maxIterations <= 0)
     {
         std::cout << "Invalid input values.\n";
@@ -27,13 +27,19 @@ int main()
 
     Mandelbrot mandelbrot(width, height, maxIterations, minX, minY, maxX, maxY);
 
+    int maxThreads = omp_get_max_threads();
+
+    std::cout << "Max available threads: " << maxThreads << "\n\n";
     std::cout << "\nGenerating Mandelbrot...\n";
 
-    mandelbrot.generate();
+    auto start = std::chrono::high_resolution_clock::now();
+    mandelbrot.generate(maxThreads);
+    auto end = std::chrono::high_resolution_clock::now();
+    double time = std::chrono::duration<double>(end - start).count();
 
     mandelbrot.save("mandelbrot.png");
 
-    std::cout << "Done! Image saved as mandelbrot.png\n";
+    std::cout << "Done in " << time << " seconds. Image saved as mandelbrot.png\n";
     system("start mandelbrot.png");
 
     return 0;

@@ -26,9 +26,10 @@ public:
         image.resize(width * height * 3); // RGB
     }
 
-    void generate()
+    void generate(int numThreads)
     {
-        // Parallelism with parallel loops (openMP)
+        omp_set_num_threads(numThreads);
+
 #pragma omp parallel for
         for (int py = 0; py < height; py++)
         {
