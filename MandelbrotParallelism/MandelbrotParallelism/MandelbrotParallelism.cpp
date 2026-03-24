@@ -1,20 +1,40 @@
-// MandelbrotParallelism.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include <iostream>
+﻿#include <iostream>
+#include "Mandelbrot.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    int width, height, maxIterations;
+    double minX, minY, maxX, maxY;
+
+    std::cout << "Enter image width: ";
+    std::cin >> width;
+
+    std::cout << "Enter image height: ";
+    std::cin >> height;
+
+    std::cout << "Enter max iterations: ";
+    std::cin >> maxIterations;
+
+    std::cout << "Enter viewport (minX minY maxX maxY): ";
+    std::cin >> minX >> minY >> maxX >> maxY;
+
+    // Optional: einfache Validierung
+    if (width <= 0 || height <= 0 || maxIterations <= 0)
+    {
+        std::cout << "Invalid input values.\n";
+        return 1;
+    }
+
+    Mandelbrot mandelbrot(width, height, maxIterations, minX, minY, maxX, maxY);
+
+    std::cout << "\nGenerating Mandelbrot...\n";
+
+    mandelbrot.generate();
+
+    mandelbrot.save("mandelbrot.png");
+
+    std::cout << "Done! Image saved as mandelbrot.png\n";
+    system("start mandelbrot.png");
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
