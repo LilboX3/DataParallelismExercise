@@ -37,10 +37,10 @@ int main()
     auto end = std::chrono::high_resolution_clock::now();
     double time = std::chrono::duration<double>(end - start).count();
 
-    mandelbrot.save("mandelbrot.png");
+    /*mandelbrot.save("mandelbrot.png");*/
 
-    std::cout << "Done in " << time << " seconds. Image saved as mandelbrot.png\n";
-    system("start mandelbrot.png");
+    std::cout << "Done in " << time << " seconds."; // << "Image saved as mandelbrot.png\n";
+    /*system("start mandelbrot.png");*/
 
     return 0;
 }
