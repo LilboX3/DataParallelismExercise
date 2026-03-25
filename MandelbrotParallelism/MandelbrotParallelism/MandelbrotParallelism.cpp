@@ -25,22 +25,24 @@ int main()
         return 1;
     }
 
-    Mandelbrot mandelbrot(width, height, maxIterations, minX, minY, maxX, maxY);
 
     int maxThreads = omp_get_max_threads();
-
     std::cout << "Max available threads: " << maxThreads << "\n\n";
-    std::cout << "\nGenerating Mandelbrot...\n";
 
-    auto start = std::chrono::high_resolution_clock::now();
-    mandelbrot.generate(maxThreads);
-    auto end = std::chrono::high_resolution_clock::now();
-    double time = std::chrono::duration<double>(end - start).count();
+    for (int i = 1; i <= maxThreads; ++i) {
+        std::cout << "THREAD AMOUNT: " << i;
+        Mandelbrot mandelbrot(width, height, maxIterations, minX, minY, maxX, maxY, i);
+        auto start = std::chrono::high_resolution_clock::now();
+        std::cout << "\nGenerating Mandelbrot...\n";
+        mandelbrot.generate();
+        auto end = std::chrono::high_resolution_clock::now();
+        double time = std::chrono::duration<double>(end - start).count();
 
-    /*mandelbrot.save("mandelbrot.png");*/
+        /*mandelbrot.save("mandelbrot.png");*/
 
-    std::cout << "Done in " << time << " seconds."; // << "Image saved as mandelbrot.png\n";
-    /*system("start mandelbrot.png");*/
+        std::cout << "Done in " << time << " seconds.\n"; // << "Image saved as mandelbrot.png\n";
+        /*system("start mandelbrot.png");*/
+    }
 
     return 0;
 }

@@ -19,16 +19,16 @@ private:
 
 public:
     Mandelbrot(int w, int h, int maxIter,
-        double minX, double minY, double maxX, double maxY)
+        double minX, double minY, double maxX, double maxY, int numThreads)
         : width(w), height(h), maxIterations(maxIter),
         minX(minX), minY(minY), maxX(maxX), maxY(maxY)
     {
+        omp_set_num_threads(numThreads);
         image.resize(width * height * 3); // RGB
     }
 
-    void generate(int numThreads)
+    void generate()
     {
-        omp_set_num_threads(numThreads);
 
 #pragma omp parallel for
         for (int py = 0; py < height; py++)
